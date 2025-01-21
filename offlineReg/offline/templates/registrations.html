@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrations</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Registrations</h1>
+
+    <!-- Search Form -->
+    <form method="get" action="">
+        <label for="search_date">Search by Date:</label>
+        <input type="date" id="search_date" name="search_date" 
+               value="{{ search_date }}" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Registrations Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Roll Number</th>
+                <th>Year</th>
+                <th>Branch</th>
+                <th>Section</th>
+                <th>Email</th>
+                <th>Mobile Number</th>
+                <th>Event</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for registration in registrations %}
+                <tr>
+                    <td>{{ registration.name }}</td>
+                    <td>{{ registration.roll_number }}</td>
+                    <td>{{ registration.year }}</td>
+                    <td>{{ registration.branch }}</td>
+                    <td>{{ registration.section }}</td>
+                    <td>{{ registration.email }}</td>
+                    <td>{{ registration.mobile_number }}</td>
+                    <td>{{ registration.event.name }}</td>
+                    <td>{{ registration.date }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="9">No registrations found for the selected date.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

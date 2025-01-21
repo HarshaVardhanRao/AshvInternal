@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Registrations</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Registrations for {{ date }}</h1>
+    <form method="get" action="">
+        <label for="search_date">Search by Date:</label>
+        <input type="date" id="search_date" name="search_date" required>
+        <button type="submit">Search</button>
+    </form>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Roll Number</th>
+                <th>Year</th>
+                <th>Branch</th>
+                <th>Section</th>
+                <th>Email</th>
+                <th>Mobile Number</th>
+                <th>Event</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for registration in registrations %}
+            <tr>
+                <td>{{ registration.name }}</td>
+                <td>{{ registration.roll_number }}</td>
+                <td>{{ registration.year }}</td>
+                <td>{{ registration.branch }}</td>
+                <td>{{ registration.section }}</td>
+                <td>{{ registration.email }}</td>
+                <td>{{ registration.mobile_number }}</td>
+                <td>{{ registration.event.name }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'export_to_excel' date=date %}">
+        <button>Export to Excel</button>
+    </a>
+</body>
+</html>

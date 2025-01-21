@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashv Internal Registrations</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #ddb811;
+        }
+
+        /* Category Buttons */
+        .category-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .category-button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .category-button:hover {
+            background-color: #0056b3;
+        }
+
+        .category-button:focus,
+        .category-button.selected {
+            background-color: #0056b3;
+            outline: 2px solid #0056b3;
+            font-weight: bold;
+            transform: scale(1.05);
+        }
+        .inp{
+            display: flex;
+            gap: 4vw;
+            margin: 1vw;
+        }
+        
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #555555;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+
+        input:focus, select:focus {
+            border-color: #007bff;
+            outline: none;
+            background-color: #ffffff;
+        }
+
+        button {
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #218838;
+            transform: scale(1.03);
+        }
+
+        button:active {
+            transform: scale(1);
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const categoryButtons = document.querySelectorAll(".category-button");
+            const eventDropdown = document.getElementById("id_event");
+            const eventsData = {{ events_json|safe }}; // Injecting events data as JSON
+
+            // Function to populate events based on selected category
+            function updateEventDropdown(categoryId) {
+                eventDropdown.innerHTML = ""; // Clear existing options
+                const events = eventsData[categoryId] || [];
+                if (events.length === 0) {
+                    const option = document.createElement("option");
+                    option.textContent = "No events available for this category";
+                    option.disabled = true;
+                    option.selected = true;
+                    eventDropdown.appendChild(option);
+                } else {
+                    events.forEach(event => {
+                        const option = document.createElement("option");
+                        option.value = event.id;
+                        option.textContent = event.name;
+                        eventDropdown.appendChild(option);
+                    });
+                }
+            }
+
+            // Function to highlight selected category
+            function highlightSelectedCategory(button) {
+                categoryButtons.forEach(btn => btn.classList.remove("selected"));
+                button.classList.add("selected");
+            }
+
+            // Attach event listeners to category buttons
+            categoryButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const categoryId = button.getAttribute("data-category-id");
+                    highlightSelectedCategory(button);
+                    updateEventDropdown(categoryId);
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Ashv Internal Registrations</h1>
+
+        
+
+        <!-- Registration Form -->
+        <form method="post">
+            {% csrf_token %}
+            
+            <div>
+                <label for="id_name">Full Name</label>
+                {{ form.name }}
+            </div>
+            <div>
+                <label for="id_roll_number">Roll Number</label>
+                {{ form.roll_number }}
+            </div><div class="inp">
+            <div>
+                <label for="id_year">Year</label>
+                {{ form.year }}
+            </div>
+            <div>
+                <label for="id_branch">Branch</label>
+                {{ form.branch }}
+            </div>
+            <div>
+                <label for="id_section">Section</label>
+                {{ form.section }}
+            </div></div>
+
+            <div>
+                <label for="id_email">Email</label>
+                {{ form.email }}
+            </div>
+            <div>
+                <label for="id_mobile_number">Mobile Number</label>
+                {{ form.mobile_number }}
+            </div>
+            <!-- Category Buttons -->
+        <div class="category-buttons">
+            {% for category in categories %}
+                <button type="button" class="category-button" data-category-id="{{ category.id }}">
+                    {{ category.name }}
+                </button>
+            {% endfor %}
+        </div>
+            <div>
+                <label for="id_event">Event</label>
+                <select id="id_event" name="event">
+                    <!-- Options will be populated dynamically -->
+                </select>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</body>
+</html>
