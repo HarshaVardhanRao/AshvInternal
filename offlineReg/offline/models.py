@@ -20,12 +20,16 @@ class Registration(models.Model):
     dept_choices = [
         ('CSE','CSE'),('CAI','CAI'),('CSD','CSD'),('CSM','CSM'),('CSN','CSN'),('CSC','CSC'),('CST','CST'),('ECE','ECE'),('EEE','EEE'),('MECH','MECH'),('CIVIL','CIVIL'),('MBA','MBA'),('MCA','MCA'),('MTECH','MTECH')
     ]
+    year_choices = [
+        (1,1),(2,2),(3,3),(4,4)
+    ]
     name = models.CharField(max_length=100)
     roll_number = models.CharField(max_length=20)
-    year = models.IntegerField()
+    year = models.IntegerField(choices=year_choices,default=1)
     branch = models.CharField(max_length=50,choices=dept_choices,default='CSE')
     section = models.CharField(max_length=10,choices=sec_choices,default='A')
     email = models.EmailField()
     mobile_number = models.CharField(max_length=15)
+    payment_recived = models.CharField(max_length=100,default='Mr. V. Mustafa',null=True,blank=True)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     registered_on = models.DateField(auto_now_add=True)
