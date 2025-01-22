@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -32,4 +33,4 @@ class Registration(models.Model):
     mobile_number = models.CharField(max_length=15)
     payment_recived = models.CharField(max_length=100,default='Mr. V. Mustafa',null=True,blank=True)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    registered_on = models.DateField(auto_now_add=True)
+    registered_on = models.DateField(default=datetime.now)
