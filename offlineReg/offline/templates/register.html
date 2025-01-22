@@ -11,6 +11,7 @@
             background-color: #f8f9fa;
             margin: 0;
             padding: 0;
+            height: 95vh;
         }
 
         .container {
@@ -212,6 +213,14 @@
                 {{ form.payment_recived }}
             </div>
             <button type="submit">Register</button>
+            {% if messages %}
+    <div class="alert-container">
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
         </form>
     </div>
 </body>
