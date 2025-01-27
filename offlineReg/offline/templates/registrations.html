@@ -23,12 +23,29 @@
 <body>
     <h1>Registrations</h1>
 
-    <!-- Search Form -->
+    <!-- Filter Form -->
     <form method="get" action="">
+        <!-- Search by Date -->
         <label for="search_date">Search by Date:</label>
         <input type="date" id="search_date" name="search_date" 
-               value="{{ search_date }}" required>
-        <button type="submit">Search</button>
+               value="{{ search_date }}">
+
+        <!-- Filter by Category -->
+        <label for="category">Category:</label>
+        <select id="category" name="category">
+            <option value="">All Categories</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}" 
+                        {% if category.id == selected_category %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <!-- Submit Button -->
+        <button type="submit">Filter</button>
+        <!-- Download Button -->
+        <button type="submit" name="download" value="true">Download CSV</button>
     </form>
 
     <!-- Registrations Table -->
@@ -57,11 +74,11 @@
                     <td>{{ registration.email }}</td>
                     <td>{{ registration.mobile_number }}</td>
                     <td>{{ registration.event.name }}</td>
-                    <td>{{ registration.registered_on  }}</td>
+                    <td>{{ registration.registered_on }}</td>
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="9">No registrations found for the selected date.</td>
+                    <td colspan="9">No registrations found.</td>
                 </tr>
             {% endfor %}
         </tbody>

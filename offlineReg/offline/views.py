@@ -50,25 +50,53 @@ from django.shortcuts import render
 from .models import Registration
 from datetime import datetime
 
+import csv
+from django.http import HttpResponse
+
 def registration_list(request):
-    # Get the date from the query parameters (from the form)
+    # Get the search parameters
     search_date = request.GET.get('search_date')
+    print(search_date)
+    category_id = request.GET.get('category')  # Get the category from the query parameters
+    if search_date == '':
+        search_date = None
     # Retrieve all registrations by default
     registrations = Registration.objects.all()
 
+    # Filter registrations by date if provided
     if search_date:
         try:
-            # Convert the input date string to a Python date object
             date_object = datetime.strptime(search_date, '%Y-%m-%d').date()
-            # Filter registrations to include only those with the matching date
             registrations = registrations.filter(registered_on=date_object)
         except ValueError:
-            # Handle invalid date formats gracefully
             pass
+
+    # Filter registrations by category if provided
+    if category_id:
+        registrations = registrations.filter(event__category_id=category_id)
+
+    # Handle CSV download
+    if "download" in request.GET:
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="registrations.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow(['Name', 'Roll Number', 'Year', 'Branch', 'Section', 'Email', 'Mobile Number', 'Event', 'Date'])
+        for reg in registrations:
+            writer.writerow([
+                reg.name, reg.roll_number, reg.year, reg.branch, reg.section,
+                reg.email, reg.mobile_number, reg.event.name, reg.registered_on
+            ])
+        return response
+
+    # Retrieve all categories for the filter dropdown
+    categories = Category.objects.all()
 
     context = {
         'registrations': registrations,
-        'search_date': search_date,  # Pass the search date back to the template
+        'search_date': search_date,
+        'categories': categories,
+        'selected_category': category_id,
     }
     return render(request, 'registrations.html', context)
 
