@@ -51,7 +51,7 @@
     <!-- Registrations Table -->
     <table>
         <thead>
-            <tr>
+            <tr><th>S.No</th>
                 <th>Name</th>
                 <th>Roll Number</th>
                 <th>Year</th>
@@ -66,6 +66,7 @@
         <tbody>
             {% for registration in registrations %}
                 <tr>
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ registration.name }}</td>
                     <td>{{ registration.roll_number }}</td>
                     <td>{{ registration.year }}</td>
