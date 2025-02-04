@@ -34,3 +34,7 @@ class Registration(models.Model):
     payment_recived = models.CharField(max_length=100,default='Mr. V. Mustafa',null=True,blank=True)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     registered_on = models.DateField(default=datetime.now)
+
+
+    def __str__(self):
+        return self.name + " - " + self.event.name + " - " + str(self.roll_number)
