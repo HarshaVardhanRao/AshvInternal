@@ -37,4 +37,4 @@ class Registration(models.Model):
 
 
     def __str__(self):
-        return self.name + " - " + self.event.name + " - " + str(self.roll_number)
+        return self.name + " - " + self.event.name + " - " + str(self.roll_number) 
