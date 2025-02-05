@@ -10,6 +10,7 @@ class Category(models.Model):
 class Event(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="events")
     name = models.CharField(max_length=100)
+    price = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
