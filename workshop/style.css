@@ -1,0 +1,36 @@
+body{
+    background-color: rgb(203, 203, 199);
+    
+}
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 10%;
+    width: 50%;
+    margin-inline: auto;
+    margin-top: 100px;
+    background-color: rgb(185, 178, 224);
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 15px;
+    gap: 10px;
+    justify-content: ;
+}
+.form-input{
+
+    
+}
+.link{
+    
+    width: 100%;
+    justify-content:space-between;
+    display: flex;
+
+}
+.loginn{
+    background-color: rgb(234, 240, 240);
+    padding: 5px;
+    border-radius: 3px;
+    font-size: small;
+}
