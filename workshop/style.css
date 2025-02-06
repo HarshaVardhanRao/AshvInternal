@@ -15,11 +15,7 @@ form{
     border-radius: 10px;
     font-size: 15px;
     gap: 10px;
-    justify-content: ;
-}
-.form-input{
-
-    
+    justify-content: space-between;
 }
 .link{
     

@@ -41,6 +41,16 @@
                 </option>
             {% endfor %}
         </select>
+        <label for="event">Event:</label>
+        <select name="event" id="event">
+            <option value="">All Events</option>
+            {% for event in events %}
+                <option value="{{ event.id }}" 
+                        {% if event.id == selected_event %}selected{% endif %}>
+                    {{ event.name }}
+                </option>
+            {% endfor %}
+        </select>
 
         <!-- Submit Button -->
         <button type="submit">Filter</button>

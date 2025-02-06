@@ -26,6 +26,10 @@ def register(request):
             registration = form.save(commit=False)
             # Ensure the event selected is valid (you can validate further if needed)
             registration.event = Event.objects.get(name=form.cleaned_data["event"])
+            if registration.email[0].isdigit():
+                registration.email += "@mits.ac.in"
+            else:
+                registration.email += "@gmail.com"
             registration.save()
             # Display a success message
             messages.success(request, "Registration successful!")
