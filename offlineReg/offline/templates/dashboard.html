@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+            th, td {
+                padding: 8px;
+            }
+        }
+        
+        button {
+            position:fixed;
+            right: 10vh;
+            bottom: 10vh;
+            font-size: 24px;
+            background-color: #f4f4f4;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            color: #007bff;
+            border-radius: 5px;
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            outline: none;
+            
+        }
+    </style>
+</head>
+<body>
+    <h1>Ashv Internal {{ request.user.category }} Registrations</h1>
+    <h1>Total Registrations: {{ total }}</h1><form method="post"></form>
+    
+    <table style="width: 100%; border-collapse: collapse;">
+        <tr style="border-bottom: 2px solid #ddd;">
+            <th style="padding: 8px; text-align: center; background-color:#007bff;">Event</th>
+            {% for ev,co in event_count.items %}
+                <td style="padding: 8px; text-align: center; background-color: #fafafa;">{{ ev }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th style="padding: 8px; text-align: center; background-color:#007bff;">Count</th>
+            {% for ev,co in event_count.items %}
+                <td style="padding: 8px; text-align: center; background-color: #fafafa;">{{ co }}</td>
+            {% endfor %}
+        </tr>
+    </table>
+    
+
+
+   
+
+
+
+    <table class="table" id="table">
+        <tr>
+            <th>S.no</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Branch</th>
+            <th>Year</th>
+            <th>Event</th>
+        </tr>
+        {% for registration in registrations %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ registration.name }}</td>
+            <td>{{ registration.email }}</td>
+            <td>{{ registration.mobile_number }}</td>
+            <td>{{ registration.branch }}</td>
+            <td>{{ registration.year }}</td>
+            <td>{{ registration.event }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <button id="exportButton">⬇</button>
+    <script>
+        function exportTableToExcel(tableId) {
+            // Get the table element using the provided ID
+            const table = document.getElementById(tableId);
+          
+            // Extract the HTML content of the table
+            const html = table.outerHTML;
+          
+            // Create a Blob containing the HTML data with Excel MIME type
+            const blob = new Blob([html], {type: 'application/vnd.ms-excel'});
+          
+            // Create a URL for the Blob
+            const url = URL.createObjectURL(blob);
+          
+            // Create a temporary anchor element for downloading
+            const a = document.createElement('a');
+            a.href = url;
+          
+            // Set the desired filename for the downloaded file
+            a.download = 'table.xls';
+          
+            // Simulate a click on the anchor to trigger download
+            a.click();
+          
+            // Release the URL object to free up resources
+            URL.revokeObjectURL(url);
+          }
+          
+          // Attach the function to the export button's click event
+          document.getElementById('exportButton').addEventListener('click', function() {
+            exportTableToExcel('table');
+          });
+          
+    </script>
+</body>
+</html>

@@ -1,11 +1,15 @@
 from django.db import models
 from datetime import datetime
-
+from django.contrib.auth.models import AbstractUser
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
+    
+class head(AbstractUser):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="heads",null=True, blank=True)
+
 
 class Event(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="events")
