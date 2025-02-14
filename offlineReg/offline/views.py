@@ -178,3 +178,38 @@ def export_to_excel(request, date):
         return response
     else:
         return HttpResponse("Unauthorized", status=401)
+from django.shortcuts import render
+from django.db.models import Count, F, Sum
+from .models import Category
+
+def admin_dashboard(request):
+    categories = Category.objects.prefetch_related("events").all()
+    
+    category_data = []
+    grand_total_registrations = 0
+    grand_total_amount = 0
+
+    for category in categories:
+        events = category.events.annotate(
+            registration_count=Count("registration"),
+            total_price=F("price") * Count("registration")
+        )
+
+        total_category_registrations = sum(event.registration_count for event in events)
+        total_category_amount = sum(event.total_price for event in events)
+
+        grand_total_registrations += total_category_registrations
+        grand_total_amount += total_category_amount
+
+        category_data.append({
+            "category": category.name,
+            "events": events,
+            "total_registrations": total_category_registrations,
+            "total_amount": total_category_amount
+        })
+
+    return render(request, "admin_dashboard.html", {
+        "category_data": category_data,
+        "grand_total_registrations": grand_total_registrations,
+        "grand_total_amount": grand_total_amount
+    })
